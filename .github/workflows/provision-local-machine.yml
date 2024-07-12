@@ -1,0 +1,28 @@
+name: Provision Local Machine
+
+on:
+  workflow_dispatch:
+    inputs:
+      machine:
+        description: 'Local machine to provision'
+        required: true
+        default: 'localhost'
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create k3d Cluster
+        run: |
+          k3d cluster create bishnu_github_action --agents 2
+
+      - name: Apply Kubernetes Configuration
+        run: |
+          kubectl apply -f wordpress.yaml
+
+      - name: Verify Deployment
+        run: |
+          kubectl get deployments
+          kubectl get pods
