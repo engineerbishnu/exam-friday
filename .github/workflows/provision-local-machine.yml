@@ -37,3 +37,6 @@ jobs:
         run: |
           kubectl get deployments
           kubectl get pods
+          LOAD_BALANCER_IP=$(kubectl wait --for=condition=loadbalancer --timeout=120s svc/wordpress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          echo "Load Balancer IP: $LOAD_BALANCER_IP"
+          kubectl port-forward svc/wordpress 30010:80 &
