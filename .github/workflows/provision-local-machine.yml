@@ -11,9 +11,14 @@ on:
 jobs:
   provision:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Create k3d Cluster
         run: |
           sudo curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
