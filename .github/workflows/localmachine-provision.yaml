@@ -1,0 +1,44 @@
+name: Provision Local Machine
+
+on:
+  workflow_dispatch:
+    inputs:
+      machine:
+        description: 'Local machine to provision'
+        required: true
+        default: 'localhost'
+
+jobs:
+  provision:
+    runs-on: [self-hosted, bishnu-virtual-machine]  # Replace 'your-runner-label' with the label of your self-hosted runner
+    strategy:
+      matrix:
+        node: [16]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+
+      - name: Create Kind Cluster
+        run: |
+          kind create cluster --name wordpress-cluster
+
+      - name: Apply Kubernetes Configuration
+        run: |
+          kubectl apply -f wordpress.yaml
+
+      - name: Verify Deployment
+        run: |
+          kubectl get deployments
+          kubectl get pods
+          sleep 90 && kubectl get ns
+          sleep 90 && kubectl get nodes
+          sleep 90 && kubectl get pods
+          sleep 90 && kubectl get svc
+          kubectl port-forward svc/wordpress 30010:80 &
